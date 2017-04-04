@@ -11,6 +11,7 @@ RUN apk --update add \
     mkdir /root/.aws
 
 COPY setup-cloudformation-environment /setup-cloudformation-environment
+RUN chmod +x /setup-cloudformation-environment
 
 # Expose volume for adding credentials
 VOLUME ["/root/.aws"]
