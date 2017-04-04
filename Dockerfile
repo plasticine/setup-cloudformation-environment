@@ -1,6 +1,6 @@
-FROM gliderlabs/alpine:3.4
+FROM alpine:3.4
 
-RUN apk --update add \
+RUN apk --update --no-cache add \
       python \
       py-pip \
       jq \
@@ -8,8 +8,11 @@ RUN apk --update add \
       wget \
       bash && \
     pip install --upgrade awscli && \
-    mkdir /root/.aws
+    mkdir /root/.aws && \
+    apk --purge -v del py-pip && \
+    rm /var/cache/apk/*
 
+COPY example.json /example.json
 COPY setup-cloudformation-environment /setup-cloudformation-environment
 RUN chmod +x /setup-cloudformation-environment
 

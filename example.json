@@ -1,0 +1,52 @@
+{
+    "Tags": [
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "test",
+            "Key": "Environment"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "nebula",
+            "Key": "Group"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "etcd-cluster-node",
+            "Key": "Name"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "true",
+            "Key": "Terraform"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "etcd-cluster-autoscaler-AutoScalingGroup-YA9RWII1QXFO",
+            "Key": "aws:autoscaling:groupName"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "AutoScalingGroup",
+            "Key": "aws:cloudformation:logical-id"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "arn:aws:cloudformation:ap-southeast-1:333484250270:stack/etcd-cluster-autoscaler/a2422a50-1976-11e7-b397-500c336f381e",
+            "Key": "aws:cloudformation:stack-id"
+        },
+        {
+            "ResourceType": "instance",
+            "ResourceId": "i-0e2738447e7288236",
+            "Value": "etcd-cluster-autoscaler",
+            "Key": "aws:cloudformation:stack-name"
+        }
+    ]
+}
