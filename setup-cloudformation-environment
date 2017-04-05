@@ -4,24 +4,28 @@ pkg="setup-cloudformation-environment"
 version="1.0"
 
 ENVIRONMENT_FILE_PATH="/etc/cloudformation-environment"
+read -r -d '' JQ_PARSER <<'JQ_PARSER'
+.Tags
+| map(select(.Key | startswith("aws:cloudformation:")))
+| map({key: (.Key | split(":") | join("_") | split("-") | join("") | ascii_upcase), value: .Value})
+| from_entries
+| keys[] as $key | "\($key)=\"\(.[$key])\""
+JQ_PARSER
 
-# export AWS_REGION="$(curl -sSL http://169.254.169.254/latest/dynamic/instance-identity/document | jq --raw-output .region)"
-# if [[ ! $AWS_REGION ]]; then
-#   echo "$pkg: failed to get region"
-#   exit 1
-# fi
+export AWS_REGION="$(curl -sSL http://169.254.169.254/latest/dynamic/instance-identity/document | jq --raw-output .region)"
+if [[ ! $AWS_REGION ]]; then
+  echo "$pkg: failed to get region"
+  exit 1
+fi
 
-# EC2_INSTANCE_ID="$(curl -sSL http://169.254.169.254/latest/meta-data/instance-id)"
-# if [[ ! $EC2_INSTANCE_ID ]]; then
-#   echo "$pkg: failed to get instance id from instance metadata"
-#   exit 2
-# fi
+EC2_INSTANCE_ID="$(curl -sSL http://169.254.169.254/latest/meta-data/instance-id)"
+if [[ ! $EC2_INSTANCE_ID ]]; then
+  echo "$pkg: failed to get instance id from instance metadata"
+  exit 2
+fi
 
-# aws ec2 describe-tags --filters "Name=resource-id,Values=${EC2_INSTANCE_ID}" --region ${AWS_REGION} \
-#   | jq --raw-output '.Tags | map(select(.Key | startswith("aws:cloudformation:"))) | map({key: (.Key | gsub(":"; "_") | gsub("-"; "") | ascii_upcase), value: .Value}) | from_entries | keys[] as $k | "\($k)=\"\(.[$k])\""' \
-#   > $ENVIRONMENT_FILE_PATH
-
-cat /example.json \
-  | jq --raw-output '.Tags | map(select(.Key | startswith("aws:cloudformation:"))) | map({key: (.Key | gsub(":"; "_") | gsub("-"; "") | ascii_upcase), value: .Value}) | from_entries | keys[] as $k | "\($k)=\"\(.[$k])\""' \
+aws ec2 describe-tags --filters "Name=resource-id,Values=${EC2_INSTANCE_ID}" --region ${AWS_REGION} \
+  | jq --raw-output "${JQ_PARSER}" \
+  > $ENVIRONMENT_FILE_PATH
 
 exit 0

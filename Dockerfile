@@ -12,13 +12,10 @@ RUN apk --update --no-cache add \
     apk --purge -v del py-pip && \
     rm /var/cache/apk/*
 
-COPY example.json /example.json
 COPY setup-cloudformation-environment /setup-cloudformation-environment
 RUN chmod +x /setup-cloudformation-environment
 
 # Expose volume for adding credentials
 VOLUME ["/root/.aws"]
-
 VOLUME ["/etc/cloudformation-environment"]
-
 ENTRYPOINT /setup-cloudformation-environment
